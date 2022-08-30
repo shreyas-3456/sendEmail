@@ -8,7 +8,7 @@ const VerifyForm = () => {
 
 	return (
 		<div className="container">
-			<h3>Not on our list ? Get Verified !</h3>
+			<h3>Dint Receive Email ? Not on our list ? Get Verified !</h3>
 			<form className="child">
 				<input
 					id="email"

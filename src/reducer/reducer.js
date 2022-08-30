@@ -65,6 +65,7 @@ const reducer = (state, action) => {
 					text: 'Enter valid email',
 				};
 			}
+
 			let params = {
 				Destination: {
 					/* required */
