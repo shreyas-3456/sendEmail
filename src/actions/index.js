@@ -1,0 +1,4 @@
+const VERIFY_MAIL = 'VERIFY_MAIL';
+const SEND_MAIL = 'SEND_MAIL';
+
+export { VERIFY_MAIL, SEND_MAIL };
