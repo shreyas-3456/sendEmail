@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { SEND_MAIL, VERIFY_MAIL } from '../actions';
+import { SEND_MAIL, SEND_RAW_MAIL, VERIFY_MAIL } from '../actions';
 import reducer from '../reducer/reducer';
 
 const StateProvider = React.createContext();
@@ -24,6 +24,9 @@ const ContextProvider = ({ children }) => {
 			dispatch({ type: VERIFY_MAIL, payload: email });
 		} catch (error) {}
 	};
+	const sendRawEmail = (name, email, text) => {
+		dispatch({ type: SEND_RAW_MAIL, payload: { name, email, text } });
+	};
 
 	return (
 		<StateProvider.Provider
@@ -31,6 +34,7 @@ const ContextProvider = ({ children }) => {
 				...state,
 				sendEmail,
 				verifyEmail,
+				sendRawEmail,
 			}}
 		>
 			{children}

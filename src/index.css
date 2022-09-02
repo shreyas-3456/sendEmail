@@ -29,8 +29,8 @@ label{
 
   margin-top: 10px;
   margin-left: 130px;
-  width: 200px;
-  height: 36px;
+  width: 150px;
+  height: min-content;
   border-radius: 18px;
   background-color: #1c89ff;
   border: solid 1px transparent;

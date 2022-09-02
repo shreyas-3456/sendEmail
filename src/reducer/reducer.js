@@ -3,11 +3,22 @@ import {
 	VerifyEmailAddressCommand,
 	SendEmailCommand,
 } from '@aws-sdk/client-ses';
+import { createRawMail } from '../helper/raw_mail formater';
 
-import { SEND_MAIL, VERIFY_MAIL } from '../actions';
+import { SEND_MAIL, VERIFY_MAIL, SEND_RAW_MAIL } from '../actions';
 import { validateEmail } from '../utils/validate';
+import AWS from 'aws-sdk';
+import jsPDF from 'jspdf';
 
 const client = new SESClient({
+	region: 'us-east-1',
+	credentials: {
+		accessKeyId: process.env.REACT_APP_KEY_ID,
+		secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+	},
+});
+
+const ses = new AWS.SES({
 	region: 'us-east-1',
 	credentials: {
 		accessKeyId: process.env.REACT_APP_KEY_ID,
@@ -122,6 +133,41 @@ const reducer = (state, action) => {
 				};
 			}
 			break;
+		case SEND_RAW_MAIL:
+			const { name: Name, text: Text, email: Email } = action.payload;
+			let doc = new jsPDF();
+			doc.text(10, 10, Text);
+			doc = btoa(doc.output());
+
+			const message = createRawMail(
+				'shreyas.nigam25@gmail.com',
+				Email,
+				Name,
+				doc
+			);
+
+			const rawParams = {
+				Destinations: message
+					.getRecipients({ type: 'to' })
+					.map((mailbox) => mailbox.addr),
+				RawMessage: {
+					Data: message.asRaw(), // aws-sdk does the base64 encoding
+				},
+				Source: message.getSender().addr,
+			};
+
+			ses.sendRawEmail(rawParams, function (err, result) {
+				if (err) return console.log(err.message);
+				return console.log(result.MessageId);
+			});
+			return {
+				...state,
+				formSuccess: true,
+				formError: false,
+				verifyError: false,
+				verifySuccess: false,
+				text: 'attachment sent',
+			};
 
 		default:
 			throw new Error(`No matching ${action.type} found`);

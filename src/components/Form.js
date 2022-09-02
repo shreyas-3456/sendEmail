@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { useFetch } from '../context/ContextProvider';
 
 const Form = () => {
-	const { sendEmail, formError, formSuccess, text: Text } = useFetch();
+	const {
+		sendEmail,
+		formError,
+		formSuccess,
+		text: Text,
+		sendRawEmail,
+	} = useFetch();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [text, setText] = useState('');
@@ -43,6 +49,13 @@ const Form = () => {
 					className="button"
 				>
 					Submit
+				</button>
+				<button
+					type="click"
+					onClick={() => sendRawEmail(name, email, text)}
+					className="button"
+				>
+					pdf mail
 				</button>
 			</form>
 		</>
