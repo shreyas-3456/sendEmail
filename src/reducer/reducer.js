@@ -135,6 +135,22 @@ const reducer = (state, action) => {
 			break;
 		case SEND_RAW_MAIL:
 			const { name: Name, text: Text, email: Email } = action.payload;
+			if (!Name || !Text || !Email) {
+				return {
+					...state,
+					formError: true,
+					formSuccess: false,
+					text: 'Please Enter all fields',
+				};
+			}
+			if (!validateEmail(Email)) {
+				return {
+					...state,
+					formError: true,
+					formSuccess: false,
+					text: 'Enter valid email',
+				};
+			}
 			let doc = new jsPDF();
 			doc.text(10, 10, Text);
 			doc = btoa(doc.output());
