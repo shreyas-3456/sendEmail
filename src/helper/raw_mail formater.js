@@ -1,6 +1,5 @@
 // init mimetext
 const { createMimeMessage } = require('mimetext');
-const message = createMimeMessage();
 
 export const createRawMail = (sender, to, name, attachement) => {
 	const message = createMimeMessage();
